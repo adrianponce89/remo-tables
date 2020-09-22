@@ -20,7 +20,7 @@
   ![Map with user avatars](https://github.com/RiotlySocial/remo-coding-challenge-1/blob/master/Map-with%20users.png?raw=true)
   - Assign a table to the user when they land on this page
     - Assignment logic
-      - Loom video: https://www.loom.com/share/1b07226e01fe44ca9b9b52899ce8ebb8
+      - Loom video: https://www.loom.com/share/6db9b60fb8f7433191b812ed42a36496
       - First user will go into first table, second user will be paired with first user in first table
       - third user will go into second table and fourth will be paired with third user in second table
       - once all the tables have 2 people, next incoming user will go into first table and then second and so on
