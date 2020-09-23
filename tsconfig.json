@@ -4,10 +4,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es6",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -20,7 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -40,7 +37,5 @@
     "src/__tests__/setupTests.ts",
     "chrome-extension"
   ],
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

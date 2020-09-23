@@ -1,30 +1,59 @@
-import * as React from 'react';
-import './Theater.scss'; 
+import React, { useEffect } from 'react';
+import './Theater.scss';
 import MapImage from '../assets/conference-map.svg';
 import TableConfig from './tableConfig.json';
+import Firebase from '../services/firebase';
+import { sendPostRequest } from '../apis';
 
 const Theater: React.FC = () => {
-  const firstTable = TableConfig.tables[0];
+  const profile = Firebase.auth().currentUser;
 
-  return ( 
-    <div className='remo-theater' style={{width: TableConfig.width, height: TableConfig.height}}>
-      <div className='rt-app-bar'>
-        {/**
-          * Show user profile pic/name after login
-          */}
-        <a href='javascript:;'>Logout</a>
+  useEffect(() => {
+    sendPostRequest(`assign-table`, { uid: profile?.uid }).then((response) =>
+      console.log(response)
+    );
+  }, []);
+
+  const logout = () => {
+    sendPostRequest(`unassign-table`, { uid: profile?.uid }).then((response) =>
+      console.log(response)
+    );
+    Firebase.auth().signOut();
+  };
+
+  return (
+    <div className="remo-theater" style={{ width: TableConfig.width, height: TableConfig.height }}>
+      <div className="rt-app-bar">
+        <div>
+          <img src={profile?.photoURL || undefined} />
+          <h4>{profile?.displayName}</h4>
+        </div>
+        <a className="rt-logout" href="javascript:;" onClick={logout}>
+          Logout
+        </a>
       </div>
-      <div className='rt-rooms'>
-        {/**
-          * Create rooms here as in the requirement and make sure it is aligned with background
-          */}
-        <div className='rt-room' style={{width: firstTable.width, height: firstTable.height, top: firstTable.y, left: firstTable.x}}><div className='rt-room-name'>{firstTable.id}</div></div>
+
+      <div className="rt-rooms">
+        {TableConfig.tables.map((table) => (
+          <div
+            key={table.id}
+            className="rt-room"
+            style={{
+              width: table.width,
+              height: table.height,
+              top: table.y,
+              left: table.x,
+            }}
+          >
+            <div className="rt-room-name">{table.id}</div>
+          </div>
+        ))}
       </div>
-      <div className='rt-background'>
-        <img src={MapImage} alt='Conference background'/>
+      <div className="rt-background">
+        <img src={MapImage} alt="Conference background" />
       </div>
     </div>
   );
 };
- 
+
 export default Theater;
