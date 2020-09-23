@@ -6,7 +6,7 @@
     text-align: right;
     padding: 0 1em;
     position: fixed;
-    z-index: 1;
+    z-index: 4;
     width: 100%;
     right: 0;
     box-sizing: border-box;
@@ -43,6 +43,19 @@
         bottom: 0;
         text-align: center;
         width: 100%;
+      }
+
+      .rt-user {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid green;
+        border-radius: 50%;
+        background-image: url('/user_logo.svg');
+        background-color: #cccccc;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
       }
 
       &:hover {

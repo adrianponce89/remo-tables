@@ -1,17 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Theater.scss';
 import MapImage from '../assets/conference-map.svg';
 import TableConfig from './tableConfig.json';
-import Firebase from '../services/firebase';
+import Firebase, { db } from '../services/firebase';
 import { sendPostRequest } from '../apis';
 
 const Theater: React.FC = () => {
   const profile = Firebase.auth().currentUser;
 
+  const initialTablesState = TableConfig.tables
+    .map((t, i) => ({ order: i, key: t.id }))
+    .reduce((a, v) => ({ ...a, [v.key]: { id: v.key, users: [] } }), {});
+
+  const [tablesContent, setTablesContent] = useState(initialTablesState);
+
   useEffect(() => {
     sendPostRequest(`assign-table`, { uid: profile?.uid }).then((response) =>
       console.log(response)
     );
+    const tablesRef = db.collection('tables');
+
+    tablesRef.get().then((tables) => {
+      tables.docs.forEach((doc) => {
+        const usersRef = tablesRef.doc(doc.id).collection('users');
+        usersRef.onSnapshot((querySnapshot) => {
+          const users: { id: string }[] = [];
+          querySnapshot.forEach((doc) => {
+            users.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+
+          setTablesContent((tc) => ({
+            ...tc,
+            [doc.id]: { ...tc[doc.id], users },
+          }));
+        });
+      });
+    });
   }, []);
 
   const logout = () => {
@@ -45,6 +72,17 @@ const Theater: React.FC = () => {
               left: table.x,
             }}
           >
+            {tablesContent[table.id].users.map((user: any, i: number) => (
+              <div
+                key={user.id}
+                className="rt-user"
+                style={{
+                  top: table.seats[i].y,
+                  left: table.seats[i].x,
+                  backgroundImage: `url(${user.picture})`,
+                }}
+              />
+            ))}
             <div className="rt-room-name">{table.id}</div>
           </div>
         ))}
