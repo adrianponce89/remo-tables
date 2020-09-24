@@ -61,6 +61,15 @@ const Theater: React.FC = () => {
     });
   };
 
+  // TODO: remove this test
+  const onAddRandom = () => {
+    sendPostRequest(`assign-table`, { random: true }).then((response) => {
+      if (response.error) {
+        showError(response.error);
+      }
+    });
+  };
+
   const showError = (error: string) => {
     store.addNotification({
       title: 'Error!',
@@ -91,6 +100,9 @@ const Theater: React.FC = () => {
           <h4>{profile?.displayName}</h4>
           <button className="rt-button" onClick={onShowUser} disabled={showUser}>
             Show
+          </button>
+          <button className="rt-button" onClick={onAddRandom} disabled={showUser}>
+            Add Random
           </button>
         </div>
 

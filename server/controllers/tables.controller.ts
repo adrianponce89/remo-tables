@@ -1,6 +1,7 @@
 const firestore = require('firebase-admin').firestore;
 const firebase = require('../config/firebase');
 const TableConfig = require('../config/tableConfig.json');
+const { getRandomUser } = require('./utils');
 
 const MAX_USERS = 6;
 
@@ -23,7 +24,12 @@ module.exports = {
   assignTable: async (req: any, res: any) => {
     console.log('assignTable...');
 
-    const currentUser = req['currentUser'];
+    let currentUser = req['currentUser'];
+
+    // TODO: remove this test
+    if (req.body.random) {
+      currentUser = getRandomUser();
+    }
 
     // Check if user has already a table assigned
     const tablesRef = firebase.firestore().collection('tables');
