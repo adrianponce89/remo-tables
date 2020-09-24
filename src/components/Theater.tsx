@@ -42,10 +42,12 @@ const Theater: React.FC = () => {
   }, []);
 
   const logout = () => {
-    sendPostRequest(`unassign-table`, { uid: profile?.uid }).then((response) =>
-      console.log(response)
-    );
+    sendPostRequest(`unassign-table`, {}).then((response) => console.log(response));
     Firebase.auth().signOut();
+  };
+
+  const moveTable = (tableUID: string) => {
+    sendPostRequest(`move-table`, { tableUID }).then((response) => console.log(response));
   };
 
   return (
@@ -71,6 +73,7 @@ const Theater: React.FC = () => {
               top: table.y,
               left: table.x,
             }}
+            onClick={() => moveTable(table.id)}
           >
             {tablesContent[table.id].users.map((user: any, i: number) => (
               <div
