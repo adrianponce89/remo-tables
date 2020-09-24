@@ -5,6 +5,7 @@ import MapImage from '../assets/conference-map.svg';
 import TableConfig from './tableConfig.json';
 import Firebase, { db } from '../services/firebase';
 import { sendPostRequest } from '../apis';
+import { store } from 'react-notifications-component';
 
 const Theater: React.FC = () => {
   const profile = Firebase.auth().currentUser;
@@ -17,9 +18,11 @@ const Theater: React.FC = () => {
   const [tablesContent, setTablesContent] = useState(initialTablesState);
 
   useEffect(() => {
-    sendPostRequest(`assign-table`, { uid: profile?.uid }).then((response) =>
-      console.log(response)
-    );
+    sendPostRequest(`assign-table`, { uid: profile?.uid }).then((response) => {
+      if (response.error) {
+        showError(response.error);
+      }
+    });
     const tablesRef = db.collection('tables');
 
     tablesRef.get().then((tables) => {
@@ -50,7 +53,27 @@ const Theater: React.FC = () => {
   };
 
   const moveTable = (tableUID: string) => {
-    sendPostRequest(`move-table`, { tableUID }).then((response) => console.log(response));
+    sendPostRequest(`move-table`, { tableUID }).then((response) => {
+      if (response.error) {
+        showError(response.error);
+      }
+    });
+  };
+
+  const showError = (error: string) => {
+    store.addNotification({
+      title: 'Error!',
+      message: error,
+      type: 'danger',
+      insert: 'bottom',
+      container: 'bottom-right',
+      animationIn: ['animate__animated', 'animate__fadeIn'],
+      animationOut: ['animate__animated', 'animate__fadeOut'],
+      dismiss: {
+        duration: 2000,
+        onScreen: true,
+      },
+    });
   };
 
   return (

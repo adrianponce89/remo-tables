@@ -71,6 +71,8 @@ module.exports = {
 
         console.log('Table assigned:', tableUID);
         return res.status(201).json({ msg: 'Table assigned', assignedTable: tableUID });
+      } else {
+        return res.status(400).json({ error: 'All tables are occupied' });
       }
     } else {
       console.log('User has already a table assigned:', assignedTable.docs[0].id);
@@ -108,8 +110,8 @@ module.exports = {
 
     // Stop movement if destiny is full
     let destinyTable = await tablesRef.doc(tableUID).get();
-    if (destinyTable.data().usersList.length > MAX_USERS) {
-      return res.status(400).json({ msg: 'Unable to move to new table. Max users reach' });
+    if (destinyTable.data().usersList.length >= MAX_USERS) {
+      return res.status(400).json({ error: 'Unable to move to new table. Max users reach' });
     }
 
     // Get a new write batch
