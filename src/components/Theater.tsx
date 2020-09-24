@@ -16,6 +16,7 @@ const Theater: React.FC = () => {
     .reduce((a, v) => ({ ...a, [v.key]: { id: v.key, users: [] } }), {});
 
   const [tablesContent, setTablesContent] = useState(initialTablesState);
+  const [showUser, setShowUser] = useState(false);
 
   useEffect(() => {
     sendPostRequest(`assign-table`, { uid: profile?.uid }).then((response) => {
@@ -75,6 +76,12 @@ const Theater: React.FC = () => {
       },
     });
   };
+  const onShowUser = () => {
+    setShowUser(true);
+    setTimeout(() => {
+      setShowUser(false);
+    }, 4000);
+  };
 
   return (
     <div className="remo-theater" style={{ width: TableConfig.width, height: TableConfig.height }}>
@@ -82,7 +89,11 @@ const Theater: React.FC = () => {
         <div>
           <img src={profile?.photoURL || undefined} />
           <h4>{profile?.displayName}</h4>
+          <button className="rt-button" onClick={onShowUser} disabled={showUser}>
+            Show
+          </button>
         </div>
+
         <a className="rt-logout" href="javascript:;" onClick={logout}>
           Logout
         </a>
@@ -104,7 +115,7 @@ const Theater: React.FC = () => {
             {tablesContent[table.id].users.map((user: any, i: number) => (
               <div
                 key={user.id}
-                className="rt-user"
+                className={`rt-user ${profile?.uid == user.id && showUser ? 'bounce' : ''}`}
                 style={{
                   top: table.seats[i].y,
                   left: table.seats[i].x,
