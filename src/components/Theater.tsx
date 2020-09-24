@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import './Theater.scss';
 import MapImage from '../assets/conference-map.svg';
 import TableConfig from './tableConfig.json';
@@ -7,6 +8,7 @@ import { sendPostRequest } from '../apis';
 
 const Theater: React.FC = () => {
   const profile = Firebase.auth().currentUser;
+  const history = useHistory();
 
   const initialTablesState = TableConfig.tables
     .map((t, i) => ({ order: i, key: t.id }))
@@ -44,6 +46,7 @@ const Theater: React.FC = () => {
   const logout = () => {
     sendPostRequest(`unassign-table`, {}).then((response) => console.log(response));
     Firebase.auth().signOut();
+    history.push('/');
   };
 
   const moveTable = (tableUID: string) => {
