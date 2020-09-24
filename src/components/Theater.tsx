@@ -110,7 +110,7 @@ const Theater: React.FC = () => {
               top: table.y,
               left: table.x,
             }}
-            onClick={() => moveTable(table.id)}
+            onDoubleClick={() => moveTable(table.id)}
           >
             {tablesContent[table.id].users.map((user: any, i: number) => (
               <div
