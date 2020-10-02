@@ -1,12 +1,19 @@
-const API_URL = 'http://localhost:8000/';
+import firebase from 'firebase';
+
+const API_URL = <string>process.env.REACT_APP_API_URL;
+const auth = firebase.auth();
 
 export const sendGetRequest = async (endpoint: string) => {
-  const fullUrl = (endpoint.indexOf(API_URL) === -1) ? API_URL + endpoint : endpoint;
+  const fullUrl = endpoint.indexOf(API_URL) === -1 ? API_URL + endpoint : endpoint;
+
+  const user = auth.currentUser;
+  const token = user && (await user.getIdToken());
 
   const headers = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
   };
 
   try {
@@ -25,11 +32,16 @@ export const sendGetRequest = async (endpoint: string) => {
 };
 
 export const sendPostRequest = async (endpoint: string, data: any) => {
-  const fullUrl = (endpoint.indexOf(API_URL) === -1) ? API_URL + endpoint : endpoint;
+  const fullUrl = endpoint.indexOf(API_URL) === -1 ? API_URL + endpoint : endpoint;
+
+  const user = auth.currentUser;
+  const token = user && (await user.getIdToken());
+
   const headers = {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
   };
   try {
     const rawResponse = await fetch(fullUrl, {
