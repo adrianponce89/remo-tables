@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = <string>process.env.REACT_APP_API_URL;
 const auth = firebase.auth();
 
 export const sendGetRequest = async (endpoint: string) => {

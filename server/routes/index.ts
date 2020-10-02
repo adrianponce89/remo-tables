@@ -13,3 +13,5 @@ router.post('/unassign-table', unAssignTable);
 router.post('/move-table', moveTable);
 
 module.exports = router;
+
+export {}

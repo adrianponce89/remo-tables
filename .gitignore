@@ -2,3 +2,4 @@ node_modules/
 build/
 remo-tables-firebase.json
 .env.local
+.env

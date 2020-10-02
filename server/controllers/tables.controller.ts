@@ -153,3 +153,4 @@ module.exports = {
     return res.status(201).json({ msg: 'Move to table', to: tableUID });
   },
 };
+export {}

@@ -6,3 +6,5 @@ module.exports = {
     email: `${Math.floor(Math.random() * 1000)}@${Math.floor(Math.random() * 1000)}.com`,
   }),
 };
+
+export {}

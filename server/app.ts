@@ -31,3 +31,5 @@ async function decodeIDToken(req: any, res: any, next: any) {
   }
   next();
 }
+
+export {}
